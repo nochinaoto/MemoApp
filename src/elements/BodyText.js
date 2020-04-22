@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 
-class BodyText extends React.Compornent {
+class BodyText extends React.Component {
   render() {
     return (
       <View>

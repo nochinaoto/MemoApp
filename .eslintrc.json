@@ -3,7 +3,7 @@
   "plugins": [
     "react",
     "jsx-a11y",
-    "import",
+    "import"
   ],
   "rules": {
     "key-spacing": 0,
