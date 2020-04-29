@@ -3,6 +3,8 @@
 import { StackNavigator } from 'react-navigation';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
+import firebase from 'firebase';
+import ENV from './env.json';
 
 // import AppBar from './src/components/AppBar';
 import MemoListScreen from './src/screens/MemoListScreen';
@@ -21,16 +23,30 @@ import SignupScreen from './src/screens/SignupScreen';
 //   );
 // }
 
+const firebaseConfig = {
+  apiKey: ENV.FIREBASE_API_KEY,
+  authDomain: ENV.FIREBASE_AUTH_DOMAIN,
+  databaseURL: ENV.FIREBASE_DB_URL,
+  projectId: ENV.FIREBASE_PRJ_ID,
+  storageBucket: ENV.FIREBASE_STORAGE,
+  messagingSenderId: ENV.FIREBASE_SENDER_ID,
+  appId: ENV.FIREBASE_APPID,
+  measurementId: ENV.FIREBASE_MEASUREMENTID,
+};
+firebase.initializeApp(firebaseConfig);
+
 // EXPOSDKを36にしないとAndroidEmulator起動しない
 const App = createStackNavigator({
+  LoginScreen:      { screen: LoginScreen },
+  SignupScreen:     { screen: SignupScreen },
   Home:             { screen: MemoListScreen },
   MemoDetailScreen: { screen: MemoDetailScreen },
   MemoEditScreen:   { screen: MemoEditScreen },
-  LoginScreen:      { screen: LoginScreen },
-  SignupScreen:     { screen: SignupScreen },
 }, {
   defaultNavigationOptions: {
     headerTitle: 'MemoT',
+    headerTintColor: '#fff',
+    headerBackTitle: null,
     headerStyle: {
       backgroundColor: '#265366',
     },
