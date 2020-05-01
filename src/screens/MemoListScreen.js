@@ -1,15 +1,21 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+
 import MemoList from '../components/MemoList';
 import CircleButton from '../elements/CircleButton';
 
+// ({object})
 class MemoListScreen extends React.Component {
-  // this.props.navigation.navigate('MemoDetailScreen');
+  handlePress() {
+    const { params } = this.props.navigation.state;
+    this.props.navigation.navigate('MemoCreateScreen', { currentUser: params.currentUser });
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <MemoList navigation={this.props.navigation} />
-        <CircleButton name="plus" onPress={() => { this.props.navigation.navigate('MemoEditScreen'); }} />
+        <CircleButton name="plus" onPress={this.handlePress.bind(this)} />
       </View>
     );
   }

@@ -9,10 +9,14 @@ import ENV from './env.json';
 // import AppBar from './src/components/AppBar';
 import MemoListScreen from './src/screens/MemoListScreen';
 import MemoDetailScreen from './src/screens/MemoDetailScreen';
+import MemoCreateScreen from './src/screens/MemoCreateScreen';
 import MemoEditScreen from './src/screens/MemoEditScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import SignupScreen from './src/screens/SignupScreen';
 
+
+// eslint-disable-next-line
+require("firebase/firestore");
 
 // export default function App() {
 //   return (
@@ -40,6 +44,7 @@ const App = createStackNavigator({
   LoginScreen:      { screen: LoginScreen },
   SignupScreen:     { screen: SignupScreen },
   Home:             { screen: MemoListScreen },
+  MemoCreateScreen: { screen: MemoCreateScreen },
   MemoDetailScreen: { screen: MemoDetailScreen },
   MemoEditScreen:   { screen: MemoEditScreen },
 }, {
