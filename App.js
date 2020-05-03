@@ -3,6 +3,8 @@
 import { StackNavigator } from 'react-navigation';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
+import { Platform } from 'react-native';
+
 import firebase from 'firebase';
 import ENV from './env.json';
 
@@ -53,7 +55,17 @@ const App = createStackNavigator({
     headerTintColor: '#fff',
     headerBackTitle: null,
     headerStyle: {
+      shadowColor: '#000', // ios
+      shadowOffset: { width: 0, height: 2 }, // ios
+      shadowOpacity: 0.2, // ios
+      shadowRadius: 3, // ios
       backgroundColor: '#265366',
+      ...Platform.select({
+        android: {
+          height: 80,
+          paddingTop: 16,
+        },
+      }),
     },
     headerTitleStyle: {
       color: '#fff',
