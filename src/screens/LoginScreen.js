@@ -1,28 +1,59 @@
 import React from 'react';
+// import Expo from 'expo';
 import { StyleSheet, View, Text, TextInput, TouchableHighlight, TouchableOpacity } from 'react-native';
 import firebase from 'firebase';
 import { StackActions, NavigationActions } from 'react-navigation';
+import * as SecureStore from 'expo-secure-store';
+
+import Loading from '../elements/Loading';
 
 class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: 'naoto4@honda.co.jp',
-      password: '123456789',
+      email: '',
+      password: '',
+      isLoading: true,
     };
+  }
+
+  // awaitはasync必要
+  async componentDidMount() {
+    const email = await SecureStore.getItemAsync('email');
+    const password = await SecureStore.getItemAsync('password');
+    // email / password が存在していたら自動ログインを行う
+    // このチェックがないと、初回起動の際に空のメール・パスワードでログインを試みてしまう
+    if (email && password) {
+      firebase.auth().signInWithEmailAndPassword(email, password)
+        .then(() => {
+          this.setState({ isLoading: false });
+          this.navigateToHome();
+        })
+        .catch();
+    // SecureStore.getItemAsync('email')
+    //   .then((data) => {
+    //   })
+    }
+  }
+
+  navigateToHome() {
+    const resetAction = StackActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({ routeName: 'Home' }),
+      ],
+    });
+    this.props.navigation.dispatch(resetAction);
   }
 
   handleSubmit() {
     // Login
     firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
       .then(() => {
-        const resetAction = StackActions.reset({
-          index: 0,
-          actions: [
-            NavigationActions.navigate({ routeName: 'Home' }),
-          ],
-        });
-        this.props.navigation.dispatch(resetAction);
+        // secure store
+        SecureStore.setItemAsync('email', this.state.email);
+        SecureStore.setItemAsync('password', this.state.password);
+        this.navigateToHome();
       })
       .catch(() => {
       });
@@ -35,6 +66,7 @@ class LoginScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+        <Loading text="Now Loading" isLoading={this.state.isLoading} />
         <Text style={styles.title}>
           ログイン
         </Text>
